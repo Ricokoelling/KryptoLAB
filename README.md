@@ -19,3 +19,16 @@
 
 ### Vorlesung 2
 
+#### Aufgabe 1 
+- aufgabe.cpp
+- Ausführung: c++ .\aufgabe.cpp .\kryp.h  -> .\a.exe Klartext Key Verschlüsseltertext
+
+#### Aufgabe 2
+- aufgabe2.cpp
+-  Ausführung: c++ .\aufgabe2.cpp .\kryp.h  -> .\a.exe Verschlüsseltertext
+  - Der dazugehörigen Key muss dann in einem folgenden Textfeld eingeben werden 
+
+#### Comment
+- Es wurde ein Header benutzt um die einzelnen Funktionen zu implementieren. 
+
+### Vorlesung 3
