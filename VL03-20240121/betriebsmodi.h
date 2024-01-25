@@ -5,78 +5,264 @@
 #include <bitset>
 using namespace std;
 
-void blackbox(vector<bool> block, ofstream& output){
-  bitset<8> out;
-  size_t count = out.size()-1;
-  for(const auto &i : block){
-    if(count > 0){
-      out[count] = i;
-      count --;
-    }else{
-      out[count] = i;
-      count= out.size()-1;    
-      char text_out = out.to_ullong();
-      output << text_out;
-    }
-  }
-}
+void print_block(vector<bool> k){
 
-void char_to_bin (vector<char> block , vector<bool>& k){
-
-    bitset<8> one_char;
-    for(const char &c: block){
-      one_char = c;
-      for(int i = one_char.size() - 1; i >= 0; i--){
-        k.push_back(one_char[i]);
-      }
-    }
-
-    
-}
-
-void print_block(vector<bool> block){
-  
-  for(const auto &i : block){
+  for(const auto &i: k){
     cout << i;
   }
-  cout << endl;
+  cout<< endl;
 }
 
-void fill_zero(vector<bool>& block, size_t t){
-  size_t size = block.size();
-  cout << size << endl;
-  while(size != t){
-    block.push_back(0);
-    size++;
-  }
+vector<bool> blackbox(vector<bool> block){
+  cout << "KRYPT" << endl;
   print_block(block);
+
+  return block;
 }
 
-void ECB (size_t t, ifstream& input, ofstream& output){
+vector<bool> en_blackbox(vector<bool> block){
+  cout << "ENKRYPT" << endl;
+  print_block(block);
+
+  return block;
+}
+
+void ECB(string bitstring, size_t t){
+  string substring;
   vector<bool> block(t);
-  vector<char> char_block(t/8);
   block.clear();
-  char_block.clear();
-  char byte = 0;
-  size_t count = 0;
-  size_t max_char = t/8;
-  while(input.get(byte))
-  {
-    if(count != max_char){
-      char_block.push_back(byte);
-      count++;
+  for( size_t i = 0; i < bitstring.size() ; i+=t){
+    substring = bitstring.substr(i,t);
+    
+    for(size_t k=0; k< substring.size(); k++){
+      block.push_back(substring[k] - '0');
     }
-    if(count == max_char){
-      char_to_bin(char_block,block);
-      blackbox(block, output);
-      block.clear();
-      char_block.clear();
-      count=0;
+    if(substring.size() != t){ //fill space with zero 
+      for(size_t k = 0; k < t-substring.size() ;k++){
+        block.push_back(0);
+      }
+    }
+    blackbox(block);
+    block.clear();
+  }
+}
+
+void EN_ECB(string bitstring, size_t t){
+  string substring;
+  vector<bool> block(t);
+  block.clear();
+  for( size_t i = 0; i < bitstring.size() ; i+=t){
+    substring = bitstring.substr(i,t);
+    
+    for(size_t k=0; k< substring.size(); k++){
+      block.push_back(substring[k] - '0');
+    }
+    if(substring.size() != t){ //fill space with zero 
+      for(size_t k = 0; k < t-substring.size() ;k++){
+        block.push_back(0);
+      }
+    }
+    en_blackbox(block);
+    block.clear();
+  }
+}
+
+vector<bool> XOR(vector<bool> block, vector<bool> iv){
+  vector<bool> re;
+  for(size_t i = 0; i < block.size();i++){
+    re.push_back(block[i] ^ iv[i]);
+  }
+
+  return re;
+}
+
+void CBC(string bitstring, size_t t, string IV){
+  string substring;
+  vector<bool> block(t);
+  vector<bool> iv(IV.size());
+  block.clear();
+  iv.clear();
+
+  for(size_t j=0; j < IV.size(); j++){
+    iv.push_back(IV[j] - '0');
+  }
+
+  for(size_t i=0; i < bitstring.size(); i+=t){
+    substring = bitstring.substr(i,t);
+    for(size_t k=0; k< substring.size(); k++){
+      block.push_back(substring[k] - '0');
+    }
+    if(substring.size() != t){ //fill space with zero 
+      for(size_t k = 0; k < t-substring.size() ; k++){
+        block.push_back(0);
+      }
+    }
+    block = XOR(block,iv);
+    iv.clear();
+    iv = blackbox(block);
+    block.clear();
+  }
+}
+
+void EN_CBC (string cypherstring, size_t t, string IV){
+  string substring;
+  vector<bool> block(t);
+  vector<bool> iv(IV.size());
+  block.clear();
+  iv.clear();
+
+  for(size_t j=0; j < IV.size(); j++){
+    iv.push_back(IV[j] - '0');
+  }
+
+  for(size_t i=0; i < cypherstring.size(); i+=t){
+    substring = cypherstring.substr(i,t);
+    for(size_t k=0; k< substring.size(); k++){
+      block.push_back(substring[k] - '0');
+    }
+    if(substring.size() != t){ //fill space with zero 
+      for(size_t k = 0; k < t-substring.size() ; k++){
+        block.push_back(0);
+      }
+    }
+    vector<bool> temp = en_blackbox(block);
+    block = XOR(block,iv);
+    iv.clear();
+    iv = temp;
+    block.clear();
+  }
+}
+
+void OFB(string bitstring, string IV){
+
+  vector<bool> iv(IV.size());
+  vector<bool> block(iv.size());
+  string substring;
+
+  vector<bool> output;
+
+  const size_t t = iv.size();
+  block.clear();
+  iv.clear();
+
+  for(size_t j=0; j < IV.size(); j++){
+    iv.push_back(IV[j] - '0');
+  }
+
+  for(size_t i=0; i < bitstring.size(); i+=t){
+    substring = bitstring.substr(i,t);
+    iv = blackbox(iv);
+    for(size_t k=0; k< substring.size(); k++){
+      block.push_back(substring[k] - '0');
+    }
+    if(substring.size() != t){ //fill space with zero 
+      for(size_t k = 0; k < t-substring.size() ; k++){
+        block.push_back(0);
+      }
+    }
+    output = XOR(block, iv);
+    print_block(output);
+    block.clear();
+  }
+}
+
+void EN_OFB(string cypherstring, string IV){
+  vector<bool> iv(IV.size());
+  vector<bool> block(iv.size());
+  string substring;
+
+  vector<bool> output;
+
+  const size_t t = iv.size();
+  block.clear();
+  iv.clear();
+
+  for(size_t j=0; j < IV.size(); j++){
+    iv.push_back(IV[j] - '0');
+  }
+
+  for(size_t i=0; i < cypherstring.size(); i+=t){
+    substring = cypherstring.substr(i,t);
+    iv = en_blackbox(iv);
+    for(size_t k=0; k< substring.size(); k++){
+      block.push_back(substring[k] - '0');
+    }
+    if(substring.size() != t){ //fill space with zero 
+      for(size_t k = 0; k < t-substring.size() ; k++){
+        block.push_back(0);
+      }
+    }
+    output = XOR(block, iv);
+    print_block(output);
+    block.clear();
+  }
+}
+
+vector<bool> increment(vector<bool> counter, const size_t t){
+
+  for(size_t i = t; i >= 0; i--){
+    if(counter[i] == 1){
+      counter[i] = 0;
+    }else if(counter[i] == 0) {
+      counter[i] = 1;
+      return counter;
+    }else{
+      cout << "SOMETHING WENT WRONG AT: " << i << endl; 
+      return counter;
     }
   }
-  if(count != max_char){
-    char_to_bin(char_block,block);
-    fill_zero(block, t);
-    blackbox(block, output);
+}
+
+void CTR(string bitstring){
+  vector<bool> counter(8,0); //8bit this time can be more depening on what the user wants 
+  vector<bool> block(counter.size());
+  vector<bool> output;
+  string substring;
+
+  block.clear();
+  const size_t t = counter.size();
+
+  for(size_t i=0; i < bitstring.size(); i+=t){
+    substring = bitstring.substr(i,t);
+    blackbox(counter); //iv = blackbox(iv);
+    for(size_t k=0; k< substring.size(); k++){
+      block.push_back(substring[k] - '0');
+    }
+    if(substring.size() != t){ //fill space with zero 
+      for(size_t k = 0; k < t-substring.size() ; k++){
+        block.push_back(0);
+      }
+    }    
+    output = XOR(block, counter);
+    counter = increment(counter,t);
+    cout << "output: ";
+    print_block(output);
+    block.clear();
+  }
+}
+
+void EN_CTR(string cypherstring){
+  vector<bool> counter(8,0); //8bit this time can be more depening on what the user wants 
+  vector<bool> block(counter.size());
+  vector<bool> output;
+  string substring;
+
+  block.clear();
+  const size_t t = counter.size();
+
+  for(size_t i=0; i < cypherstring.size(); i+=t){
+    substring = cypherstring.substr(i,t);
+    counter = blackbox(counter);
+    for(size_t k=0; k< substring.size(); k++){
+      block.push_back(substring[k] - '0');
+    }
+    if(substring.size() != t){ //fill space with zero 
+      for(size_t k = 0; k < t-substring.size() ; k++){
+        block.push_back(0);
+      }
+    }    
+    output = XOR(block, counter);
+    counter = increment(counter,t);
+    block.clear();
   }
 }
