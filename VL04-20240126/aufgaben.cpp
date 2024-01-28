@@ -7,16 +7,6 @@
 
 using namespace std;
 
-bitset<8> kekw(bitset<8> test){
-  bitset<8> b("00011011");
-  bitset<8> output = test<<1;
-  if(test[7]){
-    return output ^= b; 
-  }else{
-    return output;
-  }
-
-}
 int main(int argc, char* argv[]) 
 {
   ifstream text, roundkey, subbytes;

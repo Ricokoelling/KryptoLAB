@@ -12,22 +12,6 @@ char add(char k, string key){
   if(k > 90){
     k -= 26;
   }
-  switch (k)
-  {
-    case -54:   k = 0;
-      break;
-    case -117:  k = 1;
-      break;
-    case -99:   k = 2;
-      break;
-    case -93:   k = 3;
-      break;
-    case 53:    k = 4;
-      break;
-    case 51:    k = 4;
-      break;
-    default: break;
-  }
   return k;
 }
 
@@ -65,23 +49,7 @@ char sub(char k, string key){
     return k;
   }
   k -= stoi(key);
-  switch (k)
-  {
-    case -68:   k = 0;
-      break;
-    case 125:  k = 1;
-      break;
-    case -113:   k = 2;
-      break;
-    case -107:   k = 3;
-      break;
-    case 37:    k = 4;
-      break;
-    case 39:    k = 4;
-      break;
-    default: break;
-  }
-  if(k < 65 && k > 4){
+  if(k < 65){
     k += 26;
   }
   return k;

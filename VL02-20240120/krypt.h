@@ -18,8 +18,6 @@ char sub(char k, char key){
   if(k< 65){
     k+=26;
   }
-  int p = key;
-  cout << p << endl;
   return k;
 }
 
@@ -52,7 +50,6 @@ void vigenere_krypt(ifstream& text, string key, ofstream& k_text){
 void vigenere_enkrypt(ifstream& text, string key, ofstream& en_text){
   int key_length = key.size();
   int key_index = 0;
-  cout << "key: " << key << " " << "length: " << key_length << endl;
   string line;
   while(getline(text, line, '\0'))
   {
