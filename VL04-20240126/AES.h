@@ -8,6 +8,19 @@ using namespace std;
 const int N = 4;
 
 vector<vector<int>> encrypt = {{2,3,1,1}, {1,2,3,1},{1,1,2,3},{3,1,1,2}};
+vector<vector<int>> decrypt = {{14,11,13,9}, {9,14,11,13},{13,9,14,11},{11,13,9,14}};
+
+void print_matrix_hex(vector<vector<bitset<8>>> matrix){
+  stringstream res;
+  for(int i=0;i<matrix.size();i++){
+		for(int j=0;j<matrix[i].size();j++){
+			res << hex << uppercase << matrix[i][j].to_ulong();
+      cout << res.str() << " ";
+      res.str("");
+    }
+    cout << endl;
+  }
+}
 
 void print_matrix(vector<vector<bitset<8>>> matrix){
     for(int i=0;i<matrix.size();i++){
@@ -70,7 +83,7 @@ bitset<8> lookup(string hex, vector<vector<string>> bytes){
         temp[i] = hex[i] - '0';
       }
     }
-    return hex_to_bitset(bytes[temp[0]][temp[1] ]);
+    return hex_to_bitset(bytes[temp[0]][temp[1]]);
   }else{
     if(hex[0] - '0' > 9){
       temp[0] = (hex[0] - 'a') + 10;
@@ -92,6 +105,31 @@ vector<vector<bitset<8>>> sub(vector<vector<bitset<8>>> matrix, vector<vector<st
       matrix[i][j] = lookup(res.str(), bytes);
     }
   }
+  return matrix;
+}
+
+vector<vector<bitset<8>>> invshiftrows (vector<vector<bitset<8>>> matrix){
+  bitset<8> temp;
+
+  temp = matrix[1][0];
+  matrix[1][0] = matrix[1][3];
+  matrix[1][3] = matrix[1][2];
+  matrix[1][2] = matrix[1][1];
+  matrix[1][1] = temp;
+
+  temp = matrix[2][0];
+  matrix[2][0] = matrix[2][2];
+  matrix[2][2] = temp;
+  temp = matrix[2][1];
+  matrix[2][1] = matrix[2][3];
+  matrix[2][3] = temp;
+
+  temp = matrix[3][0];
+  matrix[3][0] = matrix[3][1];
+  matrix[3][1] = matrix[3][2];
+  matrix[3][2] = matrix[3][3];
+  matrix[3][3] = temp;
+
   return matrix;
 }
 
@@ -157,6 +195,20 @@ bitset<8> mamul(vector<bitset<8>> column, vector<int> gal){
   bitset<8> a2 = add(column[2], gal[2]);
   bitset<8> a3 = add(column[3], gal[3]);
   return (a0 ^= a1 ^= a2 ^= a3);
+}
+
+vector<vector<bitset<8>>> inv_mixcolumns (vector<vector<bitset<8>>> matrix){
+  vector<bitset<8>> col;
+  for(size_t i = 0; i < N;i++){
+    for(size_t a = 0; a < N; a++){
+      col.push_back(matrix[a][i]);
+    }
+    for(size_t k=0; k <N; k++){
+      matrix[k][i] = mamul(col, decrypt[k]);
+    }
+    col.clear();
+  }
+  return matrix;
 }
 
 vector<vector<bitset<8>>> mixcolumns (vector<vector<bitset<8>>> matrix){
@@ -227,14 +279,11 @@ vector<vector<string>> to_bytes(ifstream &subbytes){
   return output;
 }
 
-void init(ifstream &input, ifstream &roundkey, ifstream &subbytes){
+vector<vector<bitset<8>>> init(ifstream &input, ifstream &roundkey, ifstream &subbytes){
   vector<vector<bitset<8>>> matrix = to_block(input);
   vector<string> keys = to_vecstring(roundkey);
   vector<vector<string>> bytes = to_bytes(subbytes);
   
-  print_matrix(matrix);
-  cout << endl;
-
   matrix = add_roundkey(matrix, keys[0]);
   for(size_t i = 1; i < 10; i++){
     matrix = sub(matrix, bytes);
@@ -246,38 +295,24 @@ void init(ifstream &input, ifstream &roundkey, ifstream &subbytes){
   matrix = shiftrows(matrix);
   matrix = add_roundkey(matrix, keys[10]);
 
-  print_matrix(matrix);
-  
+  return matrix;
 }
 
-void single_test(ifstream &input, ifstream &roundkey, ifstream &subbytes){
+vector<vector<bitset<8>>> inv_init(ifstream &input, ifstream &roundkey, ifstream &subbytes){
   vector<vector<bitset<8>>> matrix = to_block(input);
   vector<string> keys = to_vecstring(roundkey);
   vector<vector<string>> bytes = to_bytes(subbytes);
-
-  print_matrix(matrix);
-  cout << endl;
-
+  
+  matrix = add_roundkey(matrix, keys[10]);
+  for(size_t i = 9; i > 0; i--){
+    matrix = sub(matrix, bytes);
+    matrix = invshiftrows(matrix);
+    matrix = add_roundkey(matrix, keys[i]);
+    matrix = inv_mixcolumns(matrix);
+  }
+  matrix = sub(matrix, bytes);
+  matrix = invshiftrows(matrix);
   matrix = add_roundkey(matrix, keys[0]);
 
-  cout << "add roundkey" << endl;
-  print_matrix(matrix);
-  cout << endl;
-
-  cout << "subsitute" << endl;
-  matrix = sub(matrix, bytes);
-  print_matrix(matrix);
-  cout << endl;
-
-  cout << "rowshift" << endl;
-  matrix = shiftrows(matrix);
-  print_matrix(matrix);
-  cout << endl;
-
-  cout << "mixcolumns" << endl;
-  matrix = mixcolumns(matrix);
-  print_matrix(matrix);
-  cout << endl;
-
-
+  return matrix;
 }
