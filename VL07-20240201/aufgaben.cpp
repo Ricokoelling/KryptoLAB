@@ -4,16 +4,16 @@
 #include <sstream> 
 #include <fstream>
 #include <bitset>
-//#include "SPN.h"
-#include "LinApprox.h"
-#include "ExampleTexts.h"
-
+#include "gueteapprox.h"
 
 using namespace std;
 
 main(int argc, char* argv[])
 {
-  ifstream klartext;
+  ifstream sbox, approx;
 
+  sbox.open("Beispiel_SBox.txt");
+  approx.open("Beispiel_Approximation.txt");
+  gueteapprox(sbox,approx);
   return 0;
 }

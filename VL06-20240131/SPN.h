@@ -97,7 +97,7 @@ string pbox(string input){
   return re;
 }
 
-void init(ifstream &input, ifstream &key, ofstream &output){
+void spn(ifstream &input, ifstream &key, ofstream &output){
   vector<string> block = toBlock(input);
   string KEY;
   key >> KEY;

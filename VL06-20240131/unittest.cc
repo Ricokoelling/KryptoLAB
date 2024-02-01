@@ -2,28 +2,40 @@
 #include <iostream>
 #include <bitset>
 #include "LinApprox.h"
+#include "ExampleTexts.h"
+//#include "SPN.h" // not in bc double declaration 
 
 using namespace std;
 
 main()
 {
-  ifstream input, cinput;
+  ofstream klartext;
+
+  klartext.open("klartext.txt");
+
+  RandomHex(klartext, 4000);
+
+  klartext.close();
+  ifstream klartext_spn, key, input;
+  ofstream output;
+
+  /*klartext_spn.open("klartext.txt");
+  key.open("key.txt");
+  output.open("crypttext.txt");
+  spn(klartext_spn,key,output);
+  klartext_spn.close();
+  key.close();
+  output.close();*/
+
   input.open("klartext.txt");
-  cinput.open("output.txt");
+  klartext_spn.open("crypttext.txt");
+  init(input, klartext_spn);
+  input.close();
+  klartext_spn.close();
 
-  vector<string> block = toBlock(input);
-  vector<string> cblock = toBlock(cinput);
-
-  maxkey MAXKEY;
-  int array[256] = {0};
-  string v2, v4, u2, u4;
-  v2 = XOR("0", cblock[0].substr(1,1)); assert(v2 == "0");
-  v4 = XOR("0", cblock[0].substr(3,1)); assert(v4 == "3");
-  u2 = invsbox(v2); assert(u2 == "e");
-  u4 = invsbox(v4); assert(u4 == "8");
-  if(alpha(block[0],u2,u4)){
-    cout << "cunt" << endl;
-  } 
+  remove("klartext.txt");
+  remove("crypttext.txt");
 
 
+  return 0;
 }
