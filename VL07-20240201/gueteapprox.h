@@ -20,7 +20,7 @@ vector<bitset<4>> U{bitset<4>("0000"), bitset<4>("0001"), bitset<4>("0010"), bit
 
 vector<bitset<4>> V;
 vector<Approx> approx;
-
+//converts HEX to 4 bit bitset
 bitset<4> hexToBitset(char hex){
   int temp = 0;
   if(hex - '0' > 9){
@@ -32,12 +32,14 @@ bitset<4> hexToBitset(char hex){
   return bitset<4>(temp);
 }
 
+// sets V
 void setV(string sbox){
   for(size_t i = 0; i < sbox.size();i++){
     V.push_back(hexToBitset(sbox[i]));
   }
 }
 
+//sets Approx 
 void setApprox(string ap){
   stringstream res(ap);
   string word;
@@ -49,10 +51,12 @@ void setApprox(string ap){
   }
 }
 
+// AND two 4 bit bitsets
 bitset<4> AND(bitset<4> a, bitset<4> b){
   return a & b;
 }
 
+// calculates the quality of the approximation
 void gueteapprox(ifstream &sbox, ifstream &arx){
   string temp;
   sbox >> temp;

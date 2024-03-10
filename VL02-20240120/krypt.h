@@ -3,6 +3,7 @@
 #include <string>
 using namespace std;
 
+// adds key onto char
 char add(char k, char key) {
 
   k += key-65;
@@ -12,6 +13,7 @@ char add(char k, char key) {
   return k;
 }
 
+// subtracts the key from a char
 char sub(char k, char key){
   k-= key - 65;
 
@@ -21,7 +23,9 @@ char sub(char k, char key){
   return k;
 }
 
-void vigenere_krypt(ifstream& text, string key, ofstream& k_text){
+
+// enkrypt a text (from a file ) with vigenere and saves the kryptotext in a file
+void vigenere_enkrypt(ifstream& text, string key, ofstream& k_text){
   int key_length = key.size();
   int key_index = 0;
   string line;
@@ -46,8 +50,8 @@ void vigenere_krypt(ifstream& text, string key, ofstream& k_text){
     }
   }
 }
-
-void vigenere_enkrypt(ifstream& text, string key, ofstream& en_text){
+// dekrypt a text (from a file ) with vigenere and saves the text in a file
+void vigenere_dekrypt(ifstream& text, string key, ofstream& de_text){
   int key_length = key.size();
   int key_index = 0;
   string line;
@@ -55,7 +59,7 @@ void vigenere_enkrypt(ifstream& text, string key, ofstream& en_text){
   {
     for(char k : line){
       if(k < 65 || k > 90){
-        en_text << k;
+        de_text << k;
         continue;
       }
       char temp;
@@ -67,9 +71,7 @@ void vigenere_enkrypt(ifstream& text, string key, ofstream& en_text){
         temp = sub(k, key[key_index]);
         key_index++;
       }
-      cout << key_index << endl;
-
-      en_text << temp;
+      de_text << temp;
     }
   }
 }

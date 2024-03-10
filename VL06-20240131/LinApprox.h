@@ -18,6 +18,7 @@ vector<string> invSbox{"e", "3", "4", "8", "1", "c", "a", "f", "7", "d", "9", "6
 vector<int> Permutation{0,4,8,12,1,5,9,13,2,6,10,14,3,7,11,15};
 vector<string> HEX = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
 
+//takes input and changes it to a string vector
 vector<string> toBlock(ifstream &input){
   vector<string> output;
   string iss;
@@ -28,6 +29,7 @@ vector<string> toBlock(ifstream &input){
   return output;
 }
 
+// HEX to 4 bit bitset
 bitset<4> hex_to_bitset(char hex){
   int temp = 0;
       if(hex - '0' > 9){
@@ -39,6 +41,7 @@ bitset<4> hex_to_bitset(char hex){
   return bitset<4>(temp);
 }
 
+// HEX to 64 Bit int
 int hex_to_int(string hex){
   int temp = 0;
       if(hex[0] - '0' > 9){
@@ -49,6 +52,7 @@ int hex_to_int(string hex){
   return temp;
 }
 
+//XOR two bits
 string XOR(string a, string b){
 
   stringstream  res;
@@ -59,6 +63,7 @@ string XOR(string a, string b){
   return res.str();
 }
 
+//sets sboxes
 string sbox(string input){
   if(input.size() != 1){
     return "0";
@@ -76,6 +81,7 @@ string sbox(string input){
   return output;
 }
 
+//sets inverse sboxes
 string invsbox(string input){
   if(input.size() != 1){
     return "0";
@@ -93,6 +99,7 @@ string invsbox(string input){
   return output;
 }
 
+// calcultes alpha
 bool alpha(string x, string u2, string u4){
   vector<bitset<4>> xbin;
   for(size_t i=0; i < 4;i++){
@@ -107,6 +114,7 @@ bool alpha(string x, string u2, string u4){
   return false;
 }
 
+// calculate the most likely approximation
 void init(ifstream &input, ifstream &crypttext){
   vector<string> block = toBlock(input);
   vector<string> cblock = toBlock(crypttext);

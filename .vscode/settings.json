@@ -56,7 +56,14 @@
     "xtr1common": "cpp",
     "xutility": "cpp",
     "sstream": "cpp",
-    "cassert": "cpp"
+    "cassert": "cpp",
+    "random": "cpp",
+    "numbers": "cpp",
+    "array": "cpp",
+    "string_view": "cpp",
+    "span": "cpp",
+    "*.tcc": "cpp",
+    "chrono": "cpp"
   }
 
   

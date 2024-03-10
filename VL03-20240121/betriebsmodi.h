@@ -5,14 +5,7 @@
 #include <bitset>
 using namespace std;
 
-void print_block(vector<bool> k){
-
-  for(const auto &i: k){
-    cout << i;
-  }
-  cout<< endl;
-}
-
+//used as cipher tool
 vector<bool> blackbox(vector<bool> block, string key){
   vector<bool> bin_key;
   vector<bool> output;
@@ -26,6 +19,7 @@ vector<bool> blackbox(vector<bool> block, string key){
   return output;
 }
 
+//used as decipher tool
 vector<bool> en_blackbox(vector<bool> block, string key){
   vector<bool> bin_key;
   vector<bool> output;
@@ -39,6 +33,7 @@ vector<bool> en_blackbox(vector<bool> block, string key){
   return output;
 }
 
+//ECB with a bitstring, a blocksize t and a key 
 string ECB(string bitstring, size_t t, string key){
   string substring;
   string output;
@@ -64,7 +59,8 @@ string ECB(string bitstring, size_t t, string key){
   return output;
 }
 
-string EN_ECB(string bitstring, size_t t, string key ){
+//dekrypt a bitstring with size t and a key 
+string DE_ECB(string bitstring, size_t t, string key ){
   string substring;
   string output;
   vector<bool> block(t);
@@ -88,7 +84,7 @@ string EN_ECB(string bitstring, size_t t, string key ){
   }
   return output;
 }
-
+// XOR a bit sequence with a IV bit sequence (for bitwise operations a bool vector is used)
 vector<bool> XOR(vector<bool> block, vector<bool> iv){
   vector<bool> re;
   for(size_t i = 0; i < block.size();i++){
@@ -97,7 +93,7 @@ vector<bool> XOR(vector<bool> block, vector<bool> iv){
 
   return re;
 }
-
+//CBC with a bitstring, a init Vector IV,  a blocksize t and a key 
 string CBC(string bitstring, size_t t, string IV, string key){
   string substring;
   string output;
@@ -131,8 +127,8 @@ string CBC(string bitstring, size_t t, string IV, string key){
 
   return output;
 }
-
-string EN_CBC(string cypherstring, size_t t, string IV, string key){
+//Dekrypt a CBC with a bitstring, a init Vector IV, a blocksize t and a key 
+string DE_CBC(string cypherstring, size_t t, string IV, string key){
   string substring;
   string output;
   vector<bool> block(t);
@@ -169,6 +165,7 @@ string EN_CBC(string cypherstring, size_t t, string IV, string key){
 
 }
 
+// Enkrypt with OFB a bitstring with an init Vector IV and a key
 string OFB(string bitstring, string IV, string key){
 
   vector<bool> iv(IV.size());
@@ -205,8 +202,8 @@ string OFB(string bitstring, string IV, string key){
 
   return output;
 }
-
-string EN_OFB(string cypherstring, string IV, string key){
+// Dekrypt with OFB a cypherstring with a init Vector IV and a key
+string DE_OFB(string cypherstring, string IV, string key){
   vector<bool> iv(IV.size());
   vector<bool> block(iv.size());
   string substring;
@@ -240,7 +237,7 @@ string EN_OFB(string cypherstring, string IV, string key){
 
   return output;
 }
-
+// increment the counter (binary) by one 
 vector<bool> increment(vector<bool> counter, const size_t t){
 
   for(size_t i = t - 1; i >= 0; i--){
@@ -250,12 +247,12 @@ vector<bool> increment(vector<bool> counter, const size_t t){
       counter[i] = 1;
       return counter;
     }else{
-      cout << "SOMETHING WENT WRONG AT: " << i << endl; 
+      cerr << "SOMETHING WENT WRONG AT: " << i << endl; 
       return counter;
     }
   }
 }
-
+//Enkrypt a bitstring with CTR and a key
 string CTR(string bitstring, string key){
   vector<bool> counter(8,0); //8bit this time can be more depening on what the user wants 
   vector<bool> block(counter.size());
@@ -286,8 +283,8 @@ string CTR(string bitstring, string key){
   }
   return output;
 }
-
-string EN_CTR(string cypherstring, string key){
+//Dekrypt a cypherstring with CTR and a key
+string DE_CTR(string cypherstring, string key){
   vector<bool> counter(8,0); //8bit this time can be more depening on what the user wants 
   vector<bool> block(counter.size());
   vector<bool> temp;

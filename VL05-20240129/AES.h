@@ -7,28 +7,14 @@
 using namespace std;
 const int N = 4;
 
-/*
-TODO:
-1. Betriebsmodi einbauen
-1.1 ECB 
-
-- bessere Lösung für sbox input überlegen maybe irgendwas mit immer 
-
-1.2 CBC
-- 31.01
-1.3 OFB
-- 31.01
-1.4 CTR
-- 31.01
-
-*/
-
 vector<vector<int>> encrypt = {{2,3,1,1}, {1,2,3,1},{1,1,2,3},{3,1,1,2}};
 vector<vector<int>> decrypt = {{14,11,13,9}, {9,14,11,13},{13,9,14,11},{11,13,9,14}};
 vector<bitset<8>> rconTable = {bitset<8>("00000001"),bitset<8>("00000010"),bitset<8>("00000100"),bitset<8>("00001000"),
                               bitset<8>("00010000"),bitset<8>("00100000"),bitset<8>("01000000"),bitset<8>("10000000"),
                               bitset<8>("00011011"),bitset<8>("00110110")};
 vector<vector<string>> sbox;
+
+//prints matrix in Hex (used for testing)
 void print_matrix_hex(vector<vector<bitset<8>>> matrix){
   stringstream res;
   for(int i=0;i<matrix.size();i++){
@@ -41,6 +27,7 @@ void print_matrix_hex(vector<vector<bitset<8>>> matrix){
   }
 }
 
+//prints matrix in binary (used for testing)
 void print_matrix(vector<vector<bitset<8>>> matrix){
     for(int i=0;i<matrix.size();i++){
 		for(int j=0;j<matrix[i].size();j++){
@@ -50,6 +37,20 @@ void print_matrix(vector<vector<bitset<8>>> matrix){
 	}
 }
 
+//writes to file 
+void write_to_file_matrix_hex(vector<vector<bitset<8>>> matrix, ofstream &output){
+  stringstream res;
+  for(int i=0;i<matrix.size();i++){
+		for(int j=0;j<matrix[i].size();j++){
+			res << hex << uppercase << matrix[i][j].to_ulong();
+      output << res.str() << " ";
+      res.str("");
+    }
+    output << "\n";
+  }
+}
+
+//converts the matrix to a hexstring
 string matrix_hex(vector<vector<bitset<8>>> matrix){
   stringstream res;
   string output, temp;
@@ -69,6 +70,7 @@ string matrix_hex(vector<vector<bitset<8>>> matrix){
   return output;
 }
 
+//converts a hex to 8bit bitset
 bitset<8> hex_to_bitset(string hex){
   char re;
   int temp = 0;
@@ -88,6 +90,7 @@ bitset<8> hex_to_bitset(string hex){
   return re;
 }
 
+// adds roundkey in AES 
 vector<vector<bitset<8>>> add_roundkey(vector<vector<bitset<8>>> matrix, string roundkey){
   stringstream rkey(roundkey);
   string text;
@@ -110,6 +113,7 @@ vector<vector<bitset<8>>> add_roundkey(vector<vector<bitset<8>>> matrix, string 
   return matrix;
 }
 
+// looksup hex in SUBBYTES
 bitset<8> lookup(string hex){
 
   int temp[2];
@@ -132,6 +136,7 @@ bitset<8> lookup(string hex){
   }
 }
 
+// SUBBYTES in AES
 vector<vector<bitset<8>>> sub(vector<vector<bitset<8>>> matrix){
 
   string subtring;
@@ -146,6 +151,7 @@ vector<vector<bitset<8>>> sub(vector<vector<bitset<8>>> matrix){
   return matrix;
 }
 
+// inverse of SHIFTROWS in AES
 vector<vector<bitset<8>>> invshiftrows (vector<vector<bitset<8>>> matrix){
   bitset<8> temp;
 
@@ -171,6 +177,7 @@ vector<vector<bitset<8>>> invshiftrows (vector<vector<bitset<8>>> matrix){
   return matrix;
 }
 
+// shiftrows in AES
 vector<vector<bitset<8>>> shiftrows (vector<vector<bitset<8>>> matrix){
   bitset<8> temp;
 
@@ -196,6 +203,7 @@ vector<vector<bitset<8>>> shiftrows (vector<vector<bitset<8>>> matrix){
   return matrix;
 }
 
+//doubles 8-Bit input
 bitset<8> multi(bitset<8> input){
   bitset<8> b("00011011");
   bitset<8> output = input<<1;
@@ -205,7 +213,7 @@ bitset<8> multi(bitset<8> input){
     return output;
   }
 }
-
+// multiplies 2 8-bit binarys in galois field
 bitset<8> add(bitset<8> column, int gal){
   vector<bitset<8>> a;
   vector<int> b;
@@ -227,6 +235,7 @@ bitset<8> add(bitset<8> column, int gal){
   return output;
 }
 
+//matrix multiplication in galois field
 bitset<8> mamul(vector<bitset<8>> column, vector<int> gal){
   bitset<8> a0 = add(column[0], gal[0]);
   bitset<8> a1 = add(column[1], gal[1]);
@@ -235,6 +244,7 @@ bitset<8> mamul(vector<bitset<8>> column, vector<int> gal){
   return (a0 ^= a1 ^= a2 ^= a3);
 }
 
+//inverse operation of mixcolumns
 vector<vector<bitset<8>>> inv_mixcolumns (vector<vector<bitset<8>>> matrix){
   vector<bitset<8>> col;
   for(size_t i = 0; i < N;i++){
@@ -249,6 +259,7 @@ vector<vector<bitset<8>>> inv_mixcolumns (vector<vector<bitset<8>>> matrix){
   return matrix;
 }
 
+// mix the columns of the matrix
 vector<vector<bitset<8>>> mixcolumns (vector<vector<bitset<8>>> matrix){
   vector<bitset<8>> col;
   for(size_t i = 0; i < N;i++){
@@ -263,6 +274,7 @@ vector<vector<bitset<8>>> mixcolumns (vector<vector<bitset<8>>> matrix){
   return matrix;
 }
 
+// converts a input to a bitset matrix
 vector<vector<bitset<8>>> to_block(string input){
   string text;
   stringstream res(input);
@@ -288,7 +300,7 @@ vector<vector<bitset<8>>> to_block(string input){
 
   return matrix;
 }
-
+//converts the ifstream key to a string vector with each key being 
 vector<string> to_vecstring(ifstream &roundkey){
   vector<string> output;
   string byte;
@@ -306,7 +318,7 @@ vector<string> to_vecstring(ifstream &roundkey){
   }
   return output;
 }
-
+// converts the ifstream subbytes to vector of vector of strings
 void to_bytes(ifstream &subbytes){
   vector<vector<string>> output;
   vector<string> substrings;
@@ -325,6 +337,7 @@ void to_bytes(ifstream &subbytes){
   sbox = output;
 }
 
+// performs AES enkryption
 vector<vector<bitset<8>>> init(string input, vector<string> keys){
   vector<vector<bitset<8>>> matrix = to_block(input);
   
@@ -341,7 +354,7 @@ vector<vector<bitset<8>>> init(string input, vector<string> keys){
 
   return matrix;
 }
-
+// performs AES dekryption
 vector<vector<bitset<8>>> inv_init(string input, vector<string> keys ){
   vector<vector<bitset<8>>> matrix = to_block(input);
   matrix = add_roundkey(matrix, keys[10]);
@@ -385,6 +398,7 @@ string XOR(string a, string b){
   return output;
 }
 
+//XOR 2 binary
 vector<bitset<8>> XOR(vector<bitset<8>> one, vector<bitset<8>> two){
   if(one.size() == two.size()){
     for(size_t i = 0; i < one.size();i++){
@@ -396,6 +410,7 @@ vector<bitset<8>> XOR(vector<bitset<8>> one, vector<bitset<8>> two){
   return one;
 }
 
+// generate key array from key
 vector<bitset<8>> rCon (int i){
   vector<bitset<8>> output;
   output.push_back(rconTable[i]);
@@ -405,6 +420,7 @@ vector<bitset<8>> rCon (int i){
   return output;
 }
 
+// SubWord(b0,b1,b2,b3) = (S(b0),S(b1),S(b2),S(b3))
 vector<bitset<8>> SubWord(vector<bitset<8>> rotWord){
   vector<bitset<8>> output;
   stringstream res;
@@ -416,6 +432,7 @@ vector<bitset<8>> SubWord(vector<bitset<8>> rotWord){
   return output;
 }
 
+// RotWord(b0,b1,b2,b3) = (b1,b2,b3,b0)
 vector<bitset<8>> RotWord(string w){
   vector<bitset<8>> temp, output;
   stringstream res(w);
@@ -431,6 +448,8 @@ vector<bitset<8>> RotWord(string w){
 
   return output;
 }
+
+//assume key is 128-bit binary string (4 32bit words)
 string keyGenmod (string W, string subword, int i){
   vector<bitset<8>> w, rconSet, temp, output;
   string re,subs;
@@ -455,7 +474,7 @@ string keyGenmod (string W, string subword, int i){
   re.pop_back();
   return re;
 }
-
+//Generates Keys
 vector<string> keyGen(vector<string> ogKey){
   vector<string> keys;
   string W[44];
@@ -489,6 +508,7 @@ vector<string> keyGen(vector<string> ogKey){
   return keys;
 }
 
+//expands block to specific length
 string pad(string block, int counter, int length){
   for(int i = counter; i < length; i++){
     block.append("00");
@@ -497,7 +517,7 @@ string pad(string block, int counter, int length){
   block.pop_back();
   return block;
 }
-
+//XOR a two HEX strings 
 string IV(string block, string iv){
   string subs1, subs2, output;
   stringstream res1(block), res2(iv);
@@ -510,7 +530,8 @@ string IV(string block, string iv){
   return output;
 }
 
-void ECB(ifstream &input, ifstream &key, ifstream &sbox){
+// performs electronic code book for encryption of a Text
+void ECB(ifstream &input, ifstream &key, ifstream &sbox, ofstream &output){
   to_bytes(sbox);
   vector<string> keys = keyGen(to_vecstring(key));
   size_t keyLength = (keys[0].length() - 15 )/2; // 15 is exclude whitespaces and a hex got 2 char 
@@ -526,19 +547,20 @@ void ECB(ifstream &input, ifstream &key, ifstream &sbox){
     if(counter == keyLength){
       block.pop_back();
       matrix = init(block,keys);
-      print_matrix_hex(matrix);
+      write_to_file_matrix_hex(matrix,output);
       block.clear();
       counter = 0;
     }
   }
   if( counter > 0){
     matrix = init(pad(block, counter, keyLength),keys);
-    print_matrix(matrix);
+    write_to_file_matrix_hex(matrix,output);
     block.clear();
   }
 }
 
-void CBC(ifstream &input, ifstream &key, ifstream &sbox, string iv){
+// performs cipher block chaining for encryption of a Text
+void CBC(ifstream &input, ifstream &key, ifstream &sbox, string iv, ofstream &output){
   to_bytes(sbox);
   vector<string> keys = keyGen(to_vecstring(key));
   size_t keyLength = (keys[0].length() - 15 )/2; // 15 is exclude whitespaces and a hex got 2 char 
@@ -554,7 +576,7 @@ void CBC(ifstream &input, ifstream &key, ifstream &sbox, string iv){
     if(counter == keyLength){
       block.pop_back();
       matrix = init(IV(block, iv),keys);
-      print_matrix_hex(matrix);
+      write_to_file_matrix_hex(matrix,output);
       iv = matrix_hex(matrix);
       block.clear();
       counter = 0;
@@ -562,12 +584,13 @@ void CBC(ifstream &input, ifstream &key, ifstream &sbox, string iv){
   }
   if(counter > 0){
     matrix = init(IV(pad(block, counter, keyLength),iv),keys);
-    print_matrix(matrix);
+    write_to_file_matrix_hex(matrix,output);
     block.clear();
   }
 }
 
-void OFB(ifstream &input, ifstream &key, ifstream &sbox, string iv){
+// performs output feedback for encryption of a Text
+void OFB(ifstream &input, ifstream &key, ifstream &sbox, string iv, ofstream &output){
   to_bytes(sbox);
   vector<string> keys = keyGen(to_vecstring(key));
   size_t keyLength = (keys[0].length() - 15 )/2; // 15 is exclude whitespaces and a hex got 2 char 
@@ -584,18 +607,19 @@ void OFB(ifstream &input, ifstream &key, ifstream &sbox, string iv){
       block.pop_back();
       matrix = init(iv,keys);
       iv = matrix_hex(matrix);
-      cout << XOR(block, iv);
+      output << XOR(block, iv);
       block.clear();
       counter = 0;
     }
   }
   if(counter > 0){
     matrix = init(iv,keys);
-    cout << XOR(block, iv);
+    output << XOR(block, iv);
     block.clear();
   }
 }
 
+//increment counter by 1 
 string incCounter(size_t x, size_t keyLength){
   stringstream res;
   res << hex << x;
@@ -622,7 +646,8 @@ string incCounter(size_t x, size_t keyLength){
   return output;
 }
 
-void CTR(ifstream &input, ifstream &key, ifstream &sbox, string iv){
+// performs with counter encryption of a Text
+void CTR(ifstream &input, ifstream &key, ifstream &sbox, string iv, ofstream &output){
   to_bytes(sbox);
   vector<string> keys = keyGen(to_vecstring(key));
   size_t keyLength = (keys[0].length() - 15 )/2; // 15 is exclude whitespaces and a hex got 2 char 
@@ -642,7 +667,8 @@ void CTR(ifstream &input, ifstream &key, ifstream &sbox, string iv){
       matrix = init(stringCounter,keys);
       cc++;
       stringCounter = incCounter(cc, keyLength);
-      cout << XOR(block, matrix_hex(matrix)) << endl;
+      output << XOR(block, matrix_hex(matrix));
+      output << "\n";
       block.clear();
       counter = 0;
     }
@@ -650,12 +676,13 @@ void CTR(ifstream &input, ifstream &key, ifstream &sbox, string iv){
   if(counter > 0){
     stringCounter = XOR(iv, stringCounter);
     matrix = init(stringCounter,keys);
-    cout << XOR(pad(block, counter, keyLength), matrix_hex(matrix));
+    output << XOR(pad(block, counter, keyLength), matrix_hex(matrix));
     block.clear();
   }
 }
 
-void De_EBC (ifstream &input, ifstream &key, ifstream &sbox, ifstream &invsbox){
+// performs electronic code book  for decryption of a ciphertext
+void De_ECB (ifstream &input, ifstream &key, ifstream &sbox, ifstream &invsbox, ofstream &output){
   to_bytes(sbox);
   vector<string> keys = keyGen(to_vecstring(key)); // normal boxes to generate key
   size_t keyLength = (keys[0].length() - 15 )/2; // 15 is exclude whitespaces and a hex got 2 char 
@@ -671,7 +698,7 @@ void De_EBC (ifstream &input, ifstream &key, ifstream &sbox, ifstream &invsbox){
     if(counter == keyLength){
       block.pop_back();
       matrix = inv_init(block,keys);
-      print_matrix_hex(matrix);
+      write_to_file_matrix_hex(matrix, output);
       block.clear();
       counter = 0;
     }
@@ -679,12 +706,13 @@ void De_EBC (ifstream &input, ifstream &key, ifstream &sbox, ifstream &invsbox){
   if( counter > 0){
     init(pad(block, counter, keyLength), keys);
     matrix = init(block,keys);
-    print_matrix(matrix);
+    write_to_file_matrix_hex(matrix, output);
     block.clear();
   }
 }
 
-void De_CBC(ifstream &input, ifstream &key, ifstream &sbox, ifstream &invsbox, string iv){
+// performs cipher block chaining for decryption of a ciphertext
+void De_CBC(ifstream &input, ifstream &key, ifstream &sbox, ifstream &invsbox, string iv, ofstream &output){
   to_bytes(sbox);
   vector<string> keys = keyGen(to_vecstring(key)); // benutzt andere boxen 
   size_t keyLength = (keys[0].length() - 15 )/2; // 15 is exclude whitespaces and a hex got 2 char 
@@ -701,7 +729,8 @@ void De_CBC(ifstream &input, ifstream &key, ifstream &sbox, ifstream &invsbox, s
       block.pop_back();
       new_iv = block;
       matrix = inv_init(block,keys);
-      cout << XOR(matrix_hex(matrix), iv); //output
+      output << XOR(matrix_hex(matrix), iv); //output
+      output << "\n";
       iv = new_iv;
       block.clear();
       counter = 0;
@@ -709,12 +738,13 @@ void De_CBC(ifstream &input, ifstream &key, ifstream &sbox, ifstream &invsbox, s
   }
   if( counter > 0){
     matrix = init(pad(block, counter, keyLength), keys);
-    cout << XOR(matrix_hex(matrix), iv); //output
+    output << XOR(matrix_hex(matrix), iv); //output
     block.clear();
   }
 }
 
-void De_OFB(ifstream &input, ifstream &key, ifstream &sbox, ifstream &invsbox, string iv){
+// performs with output feedback for decryption of a ciphertext
+void De_OFB(ifstream &input, ifstream &key, ifstream &sbox, ifstream &invsbox, string iv, ofstream &output){
   to_bytes(sbox);
   vector<string> keys = keyGen(to_vecstring(key)); // benutzt andere boxen 
   size_t keyLength = (keys[0].length() - 15 )/2; // 15 is exclude whitespaces and a hex got 2 char 
@@ -731,7 +761,8 @@ void De_OFB(ifstream &input, ifstream &key, ifstream &sbox, ifstream &invsbox, s
       block.pop_back();
       matrix = inv_init(iv,keys);
       cypher = matrix_hex(matrix);
-      cout << XOR(cypher, iv); //output
+      output << XOR(cypher, iv); //output
+      output << "\n";
       iv = cypher;
       block.clear();
       counter = 0;
@@ -740,11 +771,13 @@ void De_OFB(ifstream &input, ifstream &key, ifstream &sbox, ifstream &invsbox, s
   if( counter > 0){
     matrix = init(iv, keys);
     cypher = pad(block, counter, keyLength);
-    cout << XOR(cypher, matrix_hex(matrix)); //output
+    output << XOR(cypher, matrix_hex(matrix)); //output
     block.clear();
   }
 }
-void De_CTR(ifstream &input, ifstream &key, ifstream &sbox, ifstream &invsbox, string iv){
+
+// performs with counter for decryption of a ciphertext
+void De_CTR(ifstream &input, ifstream &key, ifstream &sbox, ifstream &invsbox, string iv, ofstream &output){
   to_bytes(sbox);
   vector<string> keys = keyGen(to_vecstring(key));
   size_t keyLength = (keys[0].length() - 15 )/2; // 15 is exclude whitespaces and a hex got 2 char 
@@ -764,7 +797,7 @@ void De_CTR(ifstream &input, ifstream &key, ifstream &sbox, ifstream &invsbox, s
       matrix = init(stringCounter,keys);
       cc++;
       stringCounter = incCounter(cc, keyLength);
-      cout << XOR(block, matrix_hex(matrix));
+      output << XOR(block, matrix_hex(matrix));
       block.clear();
       counter = 0;
     }
@@ -772,7 +805,7 @@ void De_CTR(ifstream &input, ifstream &key, ifstream &sbox, ifstream &invsbox, s
   if(counter > 0){
     stringCounter = XOR(iv, stringCounter);
     matrix = init(stringCounter,keys);
-    cout << XOR(pad(block, counter, keyLength), matrix_hex(matrix));
+    output << XOR(pad(block, counter, keyLength), matrix_hex(matrix));
     block.clear();
   }
 }

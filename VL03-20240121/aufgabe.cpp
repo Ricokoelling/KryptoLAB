@@ -21,25 +21,26 @@ int main(int argc, char* argv[])
 
   output = ECB(bitstring_2, t, KEY);
   cout << "ECB Enkrypt: " << output << endl;
-  output = EN_ECB(output,t,KEY);
+  output = DE_ECB(output,t,KEY);
   cout << "ECB Dekrypt: " << output << endl;
 
   cout << endl;
   output = CBC(bitstring_4, t, IV, KEY); 
   cout << "CBC Enkrypt: " << output << endl;
-  output = EN_CBC(output,t, IV,KEY);
+  output = DE_CBC(output,t, IV,KEY);
   cout << "CBC Dekrypt: " << output << endl;
 
   cout << endl;
   output = OFB(bitstring_4, IV, KEY); 
   cout << "OFB Enkrypt: " << output << endl;
-  output = EN_OFB(output, IV, KEY); 
+  output = DE_OFB(output, IV, KEY); 
   cout << "OFB Dekrypt: " << output << endl;
 
   cout << endl;
   output = CTR(bitstring_4, KEY);
   cout << "CTR Enkrypt: " << output << endl;
-  output = EN_CTR(output, KEY);
+  output = DE_CTR(output, KEY);
   cout << "CTR Dekrypt: " << output << endl;
 
+  system("PAUSE");
 }

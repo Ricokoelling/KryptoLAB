@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-
+// adds key onto char 
 char add(char k, string key){
   if (k < 65 || k > 90){
     return k;
@@ -15,6 +15,7 @@ char add(char k, string key){
   return k;
 }
 
+// enkrypt a text(from file) and saves it a file
 void add_krypt(ifstream& text, string key, ofstream& k_text){
 
   string line ;
@@ -43,6 +44,7 @@ void add_krypt(ifstream& text, string key, ofstream& k_text){
   }
 }
 
+//subtract a key from a char 
 char sub(char k, string key){
 
   if (k < 65 || k > 90){
@@ -54,7 +56,7 @@ char sub(char k, string key){
   }
   return k;
 }
-
+// dekrypt a enkrypted text (from a file) and save it in a file
 void sub_krypt(ifstream& text, string key, ofstream& k_text)
 {
   string line ;

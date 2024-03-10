@@ -9,7 +9,7 @@ using namespace std;
 
 vector<string> Sbox{"E", "4", "D", "1", "2", "F", "B", "8", "3", "A", "6", "C", "5", "9", "0", "7"};
 vector<int> Permutation{0,4,8,12,1,5,9,13,2,6,10,14,3,7,11,15};
-
+//takes input and changes it to a string vector
 vector<string> toBlock(ifstream &input){
   vector<string> output;
   string iss;
@@ -20,6 +20,7 @@ vector<string> toBlock(ifstream &input){
   return output;
 }
 
+// HEX to 4 bit bitset
 bitset<4> hex_to_bitset(char hex){
   int temp = 0;
   if(hex - '0' > 9){
@@ -30,7 +31,7 @@ bitset<4> hex_to_bitset(char hex){
 
   return bitset<4>(temp);
 }
-
+//XOR two Bit
 string XOR(string a, string b){
   if(a.size() != b.size()){
     cerr << "Wrong Size in XOR, string ;" << endl;
@@ -50,6 +51,7 @@ string XOR(string a, string b){
   return output;
 }
 
+//sets sboxes
 string sbox(string input){
   if(input.size() != 4){
     return "0";
@@ -67,6 +69,7 @@ string sbox(string input){
   return output;
 }
 
+//permutation
 string pbox(string input){ 
 
   if(input.size() != 4){
@@ -96,6 +99,8 @@ string pbox(string input){
   }
   return re;
 }
+
+
 
 void spn(ifstream &input, ifstream &key, ofstream &output){
   vector<string> block = toBlock(input);

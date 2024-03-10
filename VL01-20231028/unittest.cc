@@ -37,7 +37,7 @@ main(){
     return 0;
   }
   text.open ("Klartext_1.txt");
-  k_text.open("Output.txt");
+  k_text.open("Test_Output.txt");
   const string key = "7";
   add_krypt(text, key ,k_text);
   k_text.close();
@@ -47,7 +47,7 @@ main(){
   string line_input_eq;
   ifstream test_input;
   ifstream test_input_eq;
-  test_input.open ("Output.txt");
+  test_input.open ("Test_Output.txt");
   test_input_eq.open("Kryptotext_1_Key_7.txt");
 
   // Test add_krypt
@@ -89,7 +89,7 @@ main(){
     return 0;
   }
   de_text.open ("sampleEncrypted.txt");
-  de_k_text.open("new_klartext.txt");
+  de_k_text.open("test_klartext.txt");
   const string de_key = "7";
   sub_krypt(de_text, de_key ,de_k_text);
   de_k_text.close();
@@ -99,8 +99,8 @@ main(){
   string de_line_input_eq;
   ifstream de_test_input;
   ifstream de_test_input_eq;
-  de_test_input.open ("new_klartext.txt");
-  de_test_input_eq.open("og_text.txt ");
+  de_test_input.open ("test_klartext.txt");
+  de_test_input_eq.open("sampleEncrypted.txt");
 
   // Test add_krypt
   cout << "Run test: " << counter++ << endl;

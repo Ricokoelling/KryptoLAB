@@ -33,13 +33,13 @@ main()
   assert(output4 == "0011011100110100");                  cout << "run test: " << ++counter << endl;
   assert(output5 == "00110111001101001100011111000111");  cout << "run test: " << ++counter << endl;
 
-  //Test En_ECB 
-  cout << "Test EN_ECB -> " << endl;
-  output1 = EN_ECB(output1,t, KEY);
-  output2 = EN_ECB(output2,t, KEY);
-  output3 = EN_ECB(output3,t, KEY);
-  output4 = EN_ECB(output4,t, KEY);
-  output5 = EN_ECB(output5,t, KEY);
+  //Test DE_ECB 
+  cout << "Test DE_ECB -> " << endl;
+  output1 = DE_ECB(output1,t, KEY);
+  output2 = DE_ECB(output2,t, KEY);
+  output3 = DE_ECB(output3,t, KEY);
+  output4 = DE_ECB(output4,t, KEY);
+  output5 = DE_ECB(output5,t, KEY);
 
   assert(output1 == bitstring_1);              cout << "run test: " << ++counter << endl;
   assert(output2 == bitstring_2 + "000000");   cout << "run test: " << ++counter << endl;
@@ -61,13 +61,13 @@ main()
   assert(output4 == "0011011100000011");                  cout << "run test: " << ++counter << endl;
   assert(output5 == "00110111000000111100010000000011");  cout << "run test: " << ++counter << endl;
 
-  //Test En_CBC
-  cout << "test EN_CBC ->" << endl;
-  output1 = EN_CBC(output1,t,IV, KEY);
-  output2 = EN_CBC(output2,t,IV, KEY);
-  output3 = EN_CBC(output3,t,IV, KEY);
-  output4 = EN_CBC(output4,t,IV, KEY);
-  output5 = EN_CBC(output5,t,IV, KEY);
+  //Test DE_CBC
+  cout << "test DE_CBC ->" << endl;
+  output1 = DE_CBC(output1,t,IV, KEY);
+  output2 = DE_CBC(output2,t,IV, KEY);
+  output3 = DE_CBC(output3,t,IV, KEY);
+  output4 = DE_CBC(output4,t,IV, KEY);
+  output5 = DE_CBC(output5,t,IV, KEY);
 
   assert(output1 == bitstring_1);             cout << "run test: " << ++counter << endl;
   assert(output2 == bitstring_2 + "000000");  cout << "run test: " << ++counter << endl;
@@ -89,13 +89,13 @@ main()
   assert(output4 == "0011011101100101");                  cout << "run test: " << ++counter << endl; 
   assert(output5 == "00110111011001011100011110010110");  cout << "run test: " << ++counter << endl;
 
-  //Test EN_OFB
-  cout << "Test En_OFB->" << endl;
-  output1 = EN_OFB(output1,IV, KEY);              
-  output2 = EN_OFB(output2,IV, KEY);
-  output3 = EN_OFB(output3,IV, KEY);
-  output4 = EN_OFB(output4,IV, KEY);
-  output5 = EN_OFB(output5,IV, KEY);
+  //Test DE_OFB
+  cout << "Test DE_OFB->" << endl;
+  output1 = DE_OFB(output1,IV, KEY);              
+  output2 = DE_OFB(output2,IV, KEY);
+  output3 = DE_OFB(output3,IV, KEY);
+  output4 = DE_OFB(output4,IV, KEY);
+  output5 = DE_OFB(output5,IV, KEY);
 
   assert(output1 == bitstring_1);             cout << "run test: " << ++counter << endl;
   assert(output2 == bitstring_2 + "000000");  cout << "run test: " << ++counter << endl;
@@ -118,13 +118,13 @@ main()
   assert(output5 == "00110111001101011100010111000100");  cout << "run test: " << ++counter << endl;
 
 
-  //Test EN_CTR
-  cout << "Test EN_CTR -> " << endl;
-  output1 = EN_CTR(output1, KEY);
-  output2 = EN_CTR(output2, KEY);
-  output3 = EN_CTR(output3, KEY);
-  output4 = EN_CTR(output4, KEY);
-  output5 = EN_CTR(output5, KEY);
+  //Test DE_CTR
+  cout << "Test DE_CTR -> " << endl;
+  output1 = DE_CTR(output1, KEY);
+  output2 = DE_CTR(output2, KEY);
+  output3 = DE_CTR(output3, KEY);
+  output4 = DE_CTR(output4, KEY);
+  output5 = DE_CTR(output5, KEY);
 
   assert(output1 == bitstring_1);               cout << "run test: " << ++counter << endl;
   assert(output2 == bitstring_2 + "000000");    cout << "run test: " << ++counter << endl;

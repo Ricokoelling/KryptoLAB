@@ -27,9 +27,9 @@ main()
     return 0;
   }
   text.open ("Klartext_1.txt");
-  en_text.open("Output.txt");
+  en_text.open("Test_Output.txt");
   const string key = "TAG";
-  vigenere_krypt(text, key, en_text);
+  vigenere_enkrypt(text, key, en_text);
   en_text.close();
   text.close();
 
@@ -37,7 +37,7 @@ main()
   string line_input_eq;
   ifstream test_input;
   ifstream test_input_eq;
-  test_input.open ("Output.txt");
+  test_input.open ("Test_Output.txt");
   test_input_eq.open("Kryptotext_TAG.txt");
 
   // Test vigenere_krypt
@@ -69,9 +69,9 @@ main()
     return 0;
   }
   de_text.open ("Kryptotext_TAG.txt");
-  de_k_text.open("new_klartext.txt");
+  de_k_text.open("test_klartext.txt");
   const string de_key = "TAG";
-  vigenere_enkrypt(de_text,key, de_k_text);
+  vigenere_dekrypt(de_text,key, de_k_text);
   de_k_text.close();
   de_text.close();
 
@@ -79,7 +79,7 @@ main()
   string de_line_input_eq;
   ifstream de_test_input;
   ifstream de_test_input_eq;
-  de_test_input.open ("new_klartext.txt");
+  de_test_input.open ("test_klartext.txt");
   de_test_input_eq.open("Klartext_1.txt ");
 
   // Test vigenere_enkrypt

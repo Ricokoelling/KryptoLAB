@@ -7,6 +7,7 @@
 
 using namespace std;
 
+//converts int to binary
 string intToBin(mpz_t x){
   string output;
   mpz_t div, res;
@@ -24,46 +25,42 @@ string intToBin(mpz_t x){
   }
   return output;
 }
-/*
-TODO:
 
-at * input doesn't matter 
-
-Find out why
-*/
+//RSA multiplikation 
 string mult(mpz_t x, mpz_t e, mpz_t n){
   char buffer[5000];
   mpz_t y, res;
-  mpz_inits(res,y,NULL);
+  mpz_init(y);
+  mpz_init(res);
   mpz_set_ui(y,1);
   string eBin = intToBin(e);
   int eLen = eBin.size();
-  cout << eBin[2] << endl;
-  for(size_t i=0; i < 2;i++){
-    if(eBin[i] == '1'){ //*
-      cout << "cunt" << endl;
+  for(size_t i=0; i <eLen;i++){
+    if(eBin[i] == '1'){ 
       mpz_mul(res,y,x);
       mpz_mod(y,res,n);
-    }//*
+    }
     mpz_mul(res,x,x);
     mpz_mod(x,res,n);
   }
-  mpz_get_str(buffer,10,x);
+  mpz_get_str(buffer,10,y);
   string str(buffer);
   return str;
 }
 
-void RSA(ifstream &input, ifstream &key){
+//RSA
+void RSA(ifstream &input, ifstream &key, ofstream &output){
   string line;
-  mpz_t k1,k2,i,o;
+  mpz_t k1,k2,i;
   string ret;
-  mpz_init(o);
+  mpz_init(k1);
+  mpz_init(k2);
+  mpz_init(i);
   getline(input, line);
   mpz_init_set_str(i, line.c_str(),10);
   getline(key, line);
   mpz_init_set_str(k1, line.c_str(),10);
   getline(key, line);
   mpz_init_set_str(k2, line.c_str(),10);
-  ret = mult(i, k1, k2);
-  cout << ret << endl;
+  output << mult(i, k1, k2);
 }

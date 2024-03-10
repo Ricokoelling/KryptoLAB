@@ -7,7 +7,7 @@
 
 using namespace std;
 
-
+// generates Random Hex 
 string randomHex(size_t count){
   int N = 256, test;
   stringstream res;

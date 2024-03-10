@@ -12,8 +12,8 @@ main(int argc, char* argv[])
 {
   ifstream sbox, approx;
 
-  sbox.open("Beispiel_SBox.txt");
-  approx.open("Beispiel_Approximation.txt");
+  sbox.open(argv[1]); // "Beispiel_SBox.txt"
+  approx.open(argv[2]); // "Beispiel_Approximation.txt"
   gueteapprox(sbox,approx);
   return 0;
 }
