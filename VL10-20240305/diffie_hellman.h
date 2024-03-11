@@ -13,13 +13,14 @@ vector<int> iList ={1,7,11,13,17,19,23,29};
 // Seed für den Zufallsgenerator setzen
 gmp_randstate_t state;
 
-
+//sets seed for random number generation
 void setSeed(){
   const auto p1 = chrono::system_clock::now();
   gmp_randinit_mt(state);
   gmp_randseed_ui(state, chrono::duration_cast<chrono::seconds>(p1.time_since_epoch()).count()); // gets unix timestamp and sets seed with it
 }
 
+//sets M in millerrabin
 void setM(mpz_t m, mpz_t k){
   mpz_t res;
   mpz_init(res);
@@ -32,6 +33,7 @@ void setM(mpz_t m, mpz_t k){
   mpz_clear(res);
 }
 
+// returns a random number between lower and upper bound
 void random_number_between(mpz_t result, const mpz_t lower_bound, const mpz_t upper_bound) { 
     mpz_t range;
     mpz_init(range);
@@ -44,6 +46,7 @@ void random_number_between(mpz_t result, const mpz_t lower_bound, const mpz_t up
     mpz_clear(range);
 }
 
+// millerrabin prim number test
 bool primeTest(mpz_t n){
   mpz_t k,m,res,n1;
   mpz_inits(k,m,res,n1,NULL);
@@ -79,6 +82,7 @@ bool primeTest(mpz_t n){
   return false;
 }
 
+//checks if a number is a prime
 bool isPrime(mpz_t n, int rounds){
   for(size_t i =0; i < rounds;i++){
     if(!primeTest(n)){
@@ -88,6 +92,7 @@ bool isPrime(mpz_t n, int rounds){
   return true;
 }
 
+//generates a primenumber
 void genPrime(const size_t length, mpz_t n){
   setSeed();
   mpz_t z, lower, upper,base;
@@ -117,6 +122,7 @@ void genPrime(const size_t length, mpz_t n){
   mpz_clears(z, lower, upper,base, first,second,NULL);
 }
 
+//generates p = 2*q + 1 with q and p prime
 void genP(mpz_t p, size_t keylength){
   mpz_t q;
   mpz_init(q);
@@ -131,6 +137,8 @@ void genP(mpz_t p, size_t keylength){
   mpz_clear(q); 
 }
 
+
+// calculates a "Erzeuger" Zp for p = 2q + 1
 void generator(mpz_t p){
   setSeed();
   mpz_t q,a,low,high,temp,temp2;
@@ -156,6 +164,7 @@ void generator(mpz_t p){
   mpz_clears(low,high,temp,q,temp2,a,NULL);
 }
 
+// diffiehellman generation
 void diffie(size_t keylength){
 
   mpz_t p,g,a,b,low,high,A,B,S;

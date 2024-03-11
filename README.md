@@ -134,3 +134,31 @@
 - Es wird die mingw gmp library verwendet.
       - diese wurde über msys2 installiert und ist auch in den "tasks.json" mit enthalten
 - Die Funktion wurde mit mehreren Unit tests versehen um die Einzelnen Funktionen zu testen und das Programm in seiner Fülle wurde getestet.
+
+### Vorlesung 10
+- aufgaben.cpp 
+- Ausführung
+      - c++ .\aufgaben.cpp .\diffie_hellmann.h -lgmp -lgmpxx -> .\a.exe
+#### Comment 
+- Es wurde ein Header benutzt um die einzelnen Funktionen zu implementieren. 
+- Es wird die mingw gmp library verwendet.
+      - diese wurde über msys2 installiert und ist auch in den "tasks.json" mit enthalten
+- Da die Funktionen größten Teils bereits verwendet wurden, werden diese nicht einzeln getestet.
+
+### Vorlesung 11
+- aufgaben.cpp 
+- Ausführung
+      - c++ .\aufgaben.cpp .\SHA3.h -> .\a.exe (Input Output)
+#### Comment 
+- Es wurde ein Header benutzt um die einzelnen Funktionen zu implementieren. 
+- Es wurden nur Cpp standard funktionen verwendet.
+- Die Funktion wurde mit mehreren Unit tests versehen um die Einzelnen Funktionen zu testen.
+
+### Vorlesung 12
+- aufgaben.cpp 
+- Ausführung
+      - c++ .\aufgaben.cpp .\12SHA3.h -> .\a.exe (Input Output)
+#### Comment 
+- Es wurde ein Header benutzt um die einzelnen Funktionen zu implementieren. 
+- Es wurden nur Cpp standard funktionen verwendet.
+- Die Funktionen wurden größtenteils bereits getestet, sie wurden nicht nochmals getestet. 

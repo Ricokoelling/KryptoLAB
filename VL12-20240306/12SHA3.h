@@ -3,17 +3,16 @@
 #include <vector>
 #include <sstream> 
 #include <fstream>
-#include <gmpxx.h>
 #include <bitset>
 
 using namespace std;
 
 
 // Konstanten 
-size_t D = 224; // Hashgroesse
+int D = 224; // Hashgroesse
 int R = 1152; // Blockgroesse 
-size_t C = 448; // Kapazität 
-size_t B = C+R; //Blockbreite 1600  
+int C = 448; // Kapazität 
+int B = C+R; //Blockbreite 1600  
 
 vector<vector<int>> rotations =  {{0, 1, 62, 28, 27},
                                   {36, 44, 6, 55, 20},
@@ -128,33 +127,32 @@ string NOT(string input){
 }
 
 vector<string> pad(string input){
+  input += "1";
   int len = input.size();
   vector<string> output;
-  int blocksize = len - R;
-  while(blocksize >=0){
-    output.push_back(input.substr(0, blocksize));
-    input.erase(0, blocksize);
-    blocksize -= R;
+  int temp = len - R;
+  while(temp >=0){
+    output.push_back(input.substr(0, len-R));
+    input.erase(0, len-R);
+    temp -= R;
   }
-  if(blocksize < 0){
-    for(int i = blocksize; i < 0; i++){
+  if(len < R){
+    for(size_t i = 0; i < abs(temp); i++){
       input+= '0';
     }
-  }else if(blocksize > 0){
-    cerr << "Something went wrong!" << endl;
   }
   output.push_back(input);
   return output;
 }
 
-int getCoord( size_t i, size_t j, size_t k){
+int getCoord( int i, int j, int k){
   int temp1 = (5 + (i % 5)) % 5;
   int temp2 = (5 + (j % 5)) % 5;
   int temp3 = ( 64+ (k %  64)) % 64;
   return temp1 * 5 * 64 + temp2 * 64 + temp3;
 }
 
-string getBlock(string state, size_t i, size_t j){
+string getBlock(string state, int i, int j){
   return state.substr(getCoord(i,j,0), 64);
 }
 
@@ -176,15 +174,8 @@ string theta (string state){
         xo.push_back(state[getCoord(i,j,k)]);
         xo.push_back(parityCol(state,j-1,k));
         xo.push_back(parityCol(state,j+1,k-1));
-        if(XOR(xo) != '0' && XOR(xo) != '1'){
-          cout << "WRONG " << i << " " << j << " " << k << endl;
-          int test = XOR(xo);
-          cout << "XOR: " << test << endl;
-          cout << parityCol(state,j-1,k) << endl;
-          cout << parityCol(state,j+1,k-1) << endl;
-          exit(EXIT_FAILURE); 
-        }
         output += XOR(xo);
+        xo.clear();
       }
     }
   }
@@ -223,6 +214,8 @@ string chi(string state){
       send2.push_back(getBlock(state,i,j+2));
       send.push_back(AND(send2));
       output += XOR(send);
+      send.clear();
+      send2.clear();
     }
   }
   return output;
@@ -264,7 +257,7 @@ string sha3(string input){
   return state.substr(0,D);
 }
 
-void exec(ifstream &input){
+void exec(ifstream &input, ofstream &out){
   string line, word,output;
   stringstream hexss;
   int n;
@@ -278,5 +271,5 @@ void exec(ifstream &input){
       hexss.clear();
     }
   }
-  cout << sha3(output) << endl;
+  out << sha3(output);
 }

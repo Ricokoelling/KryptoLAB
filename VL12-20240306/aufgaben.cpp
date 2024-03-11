@@ -6,10 +6,15 @@
 #include "12SHA3.h"
 
 using namespace std;
-int main(){
+int main(int argc, char* argv[]){
   
   ifstream input; 
-  input.open("input.txt");
-  exec(input);
+  ofstream output;
+  input.open(argv[1]);
+  output.open(argv[2]);
+  exec(input, output);
+
+  input.close();
+  output.close();
   return 0;
 }
