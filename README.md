@@ -13,33 +13,32 @@ Installation: ![https://rstudio-pubs-static.s3.amazonaws.com/493124_a46782f9253a
 
 #### Aufgabe 1.1 
 - aufgabe.cpp 
-- Ausführung : 
+-  Ausführung:
       - c++ .\aufgabe.cpp .\kryp.h  -> .\a.exe Klartext Key Verschlüsseltertext
       - oder die exe "one.exe" ausführen welche "Klartext_1.txt 7 Verschlüsseltertext.txt" als Argumente benutzt
 
 #### Aufgabe 1.2 
 - aufgabe1_2.cpp
-- Ausführung: 
+-  Ausführung:
       - c++ .\aufgabe1_2.cpp .\kryp.h  -> .\a.exe Verschlüsseltertext Key Klartext 
       - oder die exe "two.exe" ausführen welche "Kryptotext_1_Key_7.txt 7 Klartext.txt" als Argumente benutzt
 
 #### Aufgabe 2
 - german_texts.cpp
-- Ausführung: 
+-  Ausführung:
       - c++ .\german_texts.cpp .\kryp.h  -> .\a.exe Verschlüsseltertext
       - oder die exe "german.exe" ausführen welche das Argument "sampleEncrypted.txt" verwendet 
 
 #### Comment
 - Es wurde ein Header benutzt um die einzelnen Funktionen zu implementieren. 
 - Es wurden nur Cpp standard funktionen verwendet. 
-- Die Funktion wurde mit mehreren Unit tests versehen um die Einzelnen Funktionen zu testen
-      - Sowie wurde das System als ganzen Getestet 
+- Die Funktion wurde mit mehreren Unit tests versehen um die Einzelnen Funktionen zu testen, sowie wurde das System als ganzen getestet.
 
 ### Vorlesung 2
 
 #### Aufgabe 1 
 - aufgabe.cpp
-- Ausführung: 
+-  Ausführung: 
       - c++ .\aufgabe.cpp .\kryp.h  -> .\a.exe Klartext Key Verschlüsseltertext
       - oder die exe "one.exe" ausführen welche "Klartext_1.txt TAG Output.txt" als Argumente benutzt
 
@@ -58,7 +57,7 @@ Installation: ![https://rstudio-pubs-static.s3.amazonaws.com/493124_a46782f9253a
 
 ### Vorlesung 3
 - aufgabe.cpp
-- Ausführung
+-  Ausführung
       - c++ .\aufgabe.cpp .\betriebsmodi.h -> .\a.exe
       - oder .\a.exe ausführen 
 
@@ -69,7 +68,7 @@ Installation: ![https://rstudio-pubs-static.s3.amazonaws.com/493124_a46782f9253a
 
 ### Vorlesung 4
 - aufgaben.cpp 
-- Ausführung 
+-  Ausführung 
       - c++ .\aufgabe.cpp .\AES.h -> 
             - .\a.exe e/d Klartext.txt Key.txt Output.txt  
                   - e : enkrypt
@@ -82,7 +81,7 @@ Installation: ![https://rstudio-pubs-static.s3.amazonaws.com/493124_a46782f9253a
 
 ### Vorlesung 5
 - aufgaben.cpp
-- Ausführung
+-  Ausführung
       - c++ .\aufgabe.cpp .\AES.h -> 
             - .\a.exe (Betriebsmodi) Klartext.txt Key.txt Output.txt (IV)
                   - ECB und De_ECB (ohne IV sonst wird dieser ignoriert)
@@ -99,14 +98,13 @@ Installation: ![https://rstudio-pubs-static.s3.amazonaws.com/493124_a46782f9253a
 ### Vorlesung 6
 - aufgabe.cpp für SPN
 - aufgaben2.cpp für Lineare Approximation
-- Ausführung
-      - c++ .\aufgabe.cpp .\ExampleTexts .\SPN.h -> 
-            - .\a.exe 
-                  - da die Texte selber erzeugt werden soll habe ich die eingabe Bereits vorgeben (sonst einfach in aufgabe.cpp ändern)
-            - oder einfach spn.exe welches die Vorlagen verwendet 
-      - c++ .\aufgaben2.cpp .\ExampleTexts .\LinApprox.h ->
-            - .\a.exe 
-                  - eingaben wurden wieder vorgegeben, kann in aufgaben2.cpp geändert werden
+-  Ausführung
+      - c++ .\aufgabe.cpp .\ExampleTexts .\SPN.h -> .\a.exe 
+      - da die Texte selber erzeugt werden soll habe ich die eingabe Bereits vorgeben (sonst einfach in aufgabe.cpp ändern)
+      - oder einfach spn.exe welches die Vorlagen verwendet 
+      - c++ .\aufgaben2.cpp .\ExampleTexts .\LinApprox.h -> .\a.exe 
+      - eingaben wurden wieder vorgegeben, kann in aufgaben2.cpp geändert werden
+
 #### Comment 
 - Es wurde ein Header benutzt um die einzelnen Funktionen zu implementieren. 
 - Es wurden nur Cpp standard funktionen verwendet. 
@@ -115,8 +113,7 @@ Installation: ![https://rstudio-pubs-static.s3.amazonaws.com/493124_a46782f9253a
 ### Vorlesung 7
 - aufgaben.cpp 
 - Ausführung
-      - c++ .\aufgaben.cpp .\gueteapprox.h -> 
-            - .\a.exe (SBOX Approximation)
+      - c++ .\aufgaben.cpp .\gueteapprox.h -> .\a.exe (SBOX Approximation)
             - oder einfach guete.exe welches die Vorlagen verwendet 
 #### Comment 
 - Es wurde ein Header benutzt um die einzelnen Funktionen zu implementieren. 
