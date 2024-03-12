@@ -69,11 +69,10 @@ Installation: ![https://rstudio-pubs-static.s3.amazonaws.com/493124_a46782f9253a
 ### Vorlesung 4
 - aufgaben.cpp 
 -  Ausführung 
-      - c++ .\aufgabe.cpp .\AES.h -> 
-            - .\a.exe e/d Klartext.txt Key.txt Output.txt  
-                  - e : enkrypt
-                  - d : dekrypt
-            - oder einfach aes.exe welches die Beispiel_1 Vorlagen verwendet 
+      - c++ .\aufgabe.cpp .\AES.h ->  .\a.exe e/d Klartext.txt Key.txt Output.txt  
+      - e : enkrypt
+      - d : dekrypt
+      - oder einfach aes.exe welches die Beispiel_1 Vorlagen verwendet 
 #### Comment 
 - Es wurde ein Header benutzt um die einzelnen Funktionen zu implementieren. 
 - Es wurden nur Cpp standard funktionen verwendet. 
@@ -82,13 +81,11 @@ Installation: ![https://rstudio-pubs-static.s3.amazonaws.com/493124_a46782f9253a
 ### Vorlesung 5
 - aufgaben.cpp
 -  Ausführung
-      - c++ .\aufgabe.cpp .\AES.h -> 
-            - .\a.exe (Betriebsmodi) Klartext.txt Key.txt Output.txt (IV)
-                  - ECB und De_ECB (ohne IV sonst wird dieser ignoriert)
-                  - CBC und De_CBC (mit IV sonst fehler)
-                  - OFB und De_OFB (mit IV sonst fehler)
-                  - CTR und De_CTR (mit IV sonst fehler,  da der Counter mit IV startet und von diesen weiter läuft )
-            - oder einfach aes.exe welches die Beispiel_1 Vorlagen verwendet 
+      - c++ .\aufgabe.cpp .\AES.h -> .\a.exe (Betriebsmodi) Klartext.txt Key.txt Output.txt (IV)
+      - ECB und De_ECB (ohne IV sonst wird dieser ignoriert)
+      - CBC und De_CBC (mit IV sonst fehler)
+      - OFB und De_OFB (mit IV sonst fehler)
+      - CTR und De_CTR (mit IV sonst fehler,  da der Counter mit IV startet und von diesen weiter läuft ) oder einfach aes.exe welches die Beispiel_1 Vorlagen verwendet 
 #### Comment 
 - Es wurde ein Header benutzt um die einzelnen Funktionen zu implementieren. 
 - Es wurden nur Cpp standard funktionen verwendet. 
@@ -113,8 +110,7 @@ Installation: ![https://rstudio-pubs-static.s3.amazonaws.com/493124_a46782f9253a
 ### Vorlesung 7
 - aufgaben.cpp 
 -  Ausführung
-      - c++ .\aufgaben.cpp .\gueteapprox.h -> .\a.exe (SBOX Approximation)
-            - oder einfach guete.exe welches die Vorlagen verwendet 
+      - c++ .\aufgaben.cpp .\gueteapprox.h -> .\a.exe (SBOX Approximation) oder einfach guete.exe welches die Vorlagen verwendet 
 #### Comment 
 - Es wurde ein Header benutzt um die einzelnen Funktionen zu implementieren. 
 - Es wurden nur Cpp standard funktionen verwendet. 
