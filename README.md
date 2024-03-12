@@ -1,5 +1,14 @@
 # KryptoLAB
 
+Dies ist eine Codesammlung von Aufgaben aus dem Modul "Kryptologie LAB" der Friedrich-Schiller Universität Jena. 
+
+## Ausführung 
+Die meisten Programme haben eine .exe mit dieser die der Standard output, also mit den beiliegenden Dateien erzeugter output. 
+Da für die Berechnung des RSA sowie für Diffie Hellmann sehr große Zahlen benötigt werden, wurde die Library "GMP" verwendet. 
+Installation: ![https://rstudio-pubs-static.s3.amazonaws.com/493124_a46782f9253a4b8193595b6b2a037d58.html]
+
+
+## Vorlesungen/Aufgaben
 ### Vorlesung 1 
 
 #### Aufgabe 1.1 
